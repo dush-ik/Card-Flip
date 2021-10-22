@@ -1,0 +1,20 @@
+body {
+  box-sizing: content-box;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+div {
+  height: 10vh;
+  width: 10vw;
+  cursor: pointer;
+  margin: 10px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+div > span {
+  opacity: 0;
+}
