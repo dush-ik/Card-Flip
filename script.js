@@ -1,34 +1,49 @@
 (() => {
-  const numbers = [1, 2, 2, 3, 3, 4, 4, 5, 5];
+  const divList = Array.from(document.getElementsByTagName('div'));
+  const numbers = [1, 1, 2, 2, 3, 3, 4, 4];
   const flippedCards = [];
-  const selectedNumbers = [];
+  let selectedIndices = [];
 
   const bindEventsOnCard = (ele, index, divList) => {
     ele.addEventListener('click', (e) => {
+      // show the card
       const currentTarget = e.currentTarget;
       currentTarget.children[0].style.opacity = 1;
 
-      flippedCards.push(index);
-      selectedNumbers.push(numbers[index]);
-      if (flippedCards.length === 2) {
-        if(!selectedNumbers.every(val => val === selectedNumbers[0])) {
-          divList[flippedCards[0]].children[0].style.opacity = 0;
-          divList[flippedCards[1]].children[0].style.opacity = 0;
-          flippedCards.length = 0;
-          selectedNumbers.length = 0;
+      // push it in to the selected index array
+      selectedIndices.push(index);
+      if (selectedIndices.length === 2) {
+        if(numbers[selectedIndices[0]] === numbers[selectedIndices[1]]) {
+          // if the numbers matches push those indices in flippedCards
+          flippedCards.push(selectedIndices[0], selectedIndices[1]);
         } else {
-          // alert('you win');
-          flippedCards.length = 0;
-          selectedNumbers.length = 0;
+          // if they don`t match, hide those both card and reshuffle.
+          divList[selectedIndices[0]].children[0].style.opacity = 0;
+          divList[selectedIndices[1]].children[0].style.opacity = 0;
+          shuffleArray(numbers, flippedCards);
+          divList.map((div, index) => {
+            div.children[0].textContent = numbers[index];
+          });
         }
+        selectedIndices.length = 0;
       }
-    });
+    }, false);
   }
-  // [1,2,3,4,5,6,7]
-  // Math.floor(Math.random() * 9);
+
+  const shuffleArray = (arr, excludeIndexList = []) => {
+    let currLength = arr.length;
+    while (currLength > 0) {
+      const randomIndex = Math.floor(Math.random() * currLength--);
+      // exclude index list shouldn`t include the random index or the replaced index
+      if(!excludeIndexList.includes(randomIndex) && !excludeIndexList.includes(currLength)) {
+        [arr[randomIndex], arr[currLength]] = [arr[currLength], arr[randomIndex]];
+      }
+    }
+    return arr;
+  }
 
   const initalizeCard = () => {
-    const divList = Array.from(document.getElementsByTagName('div'));
+    shuffleArray(numbers)
     divList.map((div, index) => {
       const span = document.createElement('span');
       span.textContent = numbers[index];
@@ -39,7 +54,5 @@
 
 
 
-  document.addEventListener('DOMContentLoaded', ()=> {
-    initalizeCard();
-  }, false)
+  document.addEventListener('DOMContentLoaded', initalizeCard, false)
 })();
