@@ -21,11 +21,14 @@
           divList[selectedIndices[0]].children[0].style.opacity = 0;
           divList[selectedIndices[1]].children[0].style.opacity = 0;
           shuffleArray(numbers, flippedCards);
-          divList.map((div, index) => {
-            div.children[0].textContent = numbers[index];
-          });
+          divList.map((div, index) => div.children[0].textContent = numbers[index]);
         }
         selectedIndices.length = 0;
+      }
+      // winning condition
+      if (flippedCards.length === numbers.length) {
+        alert('Yay!!');
+        window.location.reload();
       }
     }, false);
   }
