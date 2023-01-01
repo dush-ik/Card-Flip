@@ -4,7 +4,8 @@
   const numbers = [1, 1, 2, 2, 3, 3, 4, 4];
   const flippedCards = [];
   let selectedIndices = [];
-
+	
+	// Using Fisher–Yates shuffle
   const shuffleArray = (arr, excludeIndexList = []) => {
     let currLength = arr.length;
     while (currLength > 0) {
@@ -27,17 +28,19 @@
     selectedIndices.push(index);
     if (selectedIndices.length === 2) {
       if(numbers[selectedIndices[0]] === numbers[selectedIndices[1]]) {
-        // if the numbers matches push those indices in flippedCards
+        // if the numbers matches, push those indices in flippedCards
         flippedCards.push(selectedIndices[0], selectedIndices[1]);
       } else {
         const firstOne = selectedIndices[0];
         const secondOne = selectedIndices[1];
 
+				// Rotate the cards again to hide the numbers
         setTimeout(() => {
           divList[firstOne].children[0].classList.remove('game__card--rotate');
           divList[secondOne].children[0].classList.remove('game__card--rotate');
-        }, 500);
+        }, 300);
   
+				// Reshuffle the cards again.
         setTimeout(() => {
           shuffleArray(numbers, flippedCards);
           divList.map((div, index) => div.children[0].children[1].textContent = numbers[index]);  
